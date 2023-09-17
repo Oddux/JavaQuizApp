@@ -126,23 +126,44 @@ function selectAnswer(i) {
     const selectedBtn = i.target;
     const isCorrect = selectedBtn.dataset.correct === 'true';
     if(isCorrect){
-        selectedBtn.classList.add('Correct');
+        selectedBtn.classList.add('correct');
         var score = score + 10;
     }else{
-        selectedBtn.classList.add('Incorrect');
+        selectedBtn.classList.add('incorrect');
         var score = score + 10;
         var timeleft = timeleft - 10;
     }
+    Array.from(answerButtonsElement.children).forEach(button => {
+        if(button.dataset.correct === "true"){
+            button.classList.add("correct");
+        }
+        button.disabled = true;
+    });
+    nextButton.style.display = "block";
 }
-
-
 
 function endScore() {
-
+    resetFields();
+    questionElement.innerHTML = "You scored ${score}!"
+    nextButton.innerHTML = "Play Again?"
+    nextButton.style.display = "block"
 }
 
+function nextQuestion(){
+    currentQuestionIndex++;
+    if(currentQuestionIndex < questions.length){
+        showQuestion();
+    }else{
+        endScore();
+    }
+}
+
+nextButton.addEventListener("click", () =>{
+    nextQuestion();
+});
+
 function startGame() {
-    startButton.classList.add("hide")
+    startButton.style.display = "none";
     currentQuestionIndex = 0;
     score = 0; 
     countdown();

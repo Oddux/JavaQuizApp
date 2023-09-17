@@ -52,6 +52,7 @@ body {
 
 .button {
     background: skyblue;
+    color:black;
     font-size: 14px;
     width: 100%;
     border: 1px solid;
@@ -62,9 +63,13 @@ body {
     cursor: pointer;
 }
 
-.button:hover {
+.button:hover:not([disabled]) {
     background-color: black;
     color: white;
+}
+
+.button:disabled {
+    cursor: no-drop;
 }
 
 .controlsContainer {
@@ -93,6 +98,10 @@ body {
     cursor: pointer;
 }
 
-.hidden {
-    display: none;
+.correct {
+    background: green
+}
+
+.incorrect {
+    background: red
 }
