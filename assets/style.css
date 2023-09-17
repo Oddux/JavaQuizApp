@@ -17,6 +17,23 @@ body {
     border: 1px solid black;
     border-radius: 10px;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.topbar {
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+}
+
+.countdown {
+    border: 1px solid black;
+    width: 100px;
+    padding: 5px;
+    text-align: center;
+    font-size: 14px;
+    border-radius: 4px;
 }
 
 .appContainer h1 {
