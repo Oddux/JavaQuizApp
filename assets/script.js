@@ -71,6 +71,8 @@ const questions = [{
         { text: 'neither are used', correct: false},
     ]}]
 
+const userScores = JSON.parse(localStorage.getItem("userScoreStored")) || [];
+
 const questionElement = document.getElementById("question");
 const answerButtonsElement = document.getElementById("answerButtons");
 const nextButton = document.getElementById("nextButton");
@@ -78,12 +80,14 @@ const startButton = document.getElementById("startButton");
 var timerEl = document.getElementById("countdown");
 let score = 0;
 let currentQuestionIndex = 0;
+var timeLeft = 90;
+var timeInterval = 0;
 
 startButton.addEventListener('click', startGame)
 
 function countdown() {
-    var timeLeft = 90;
-    var timeInterval = setInterval(function () {
+    console.log(timerEl);
+    timeInterval = setInterval(function () {
         if (timeLeft > 1) {
             timerEl.textContent = timeLeft + ' seconds remaining';
             timeLeft--;
@@ -93,7 +97,7 @@ function countdown() {
         } else {
             timerEl.textContent = '';
             clearInterval(timeInterval);
-        displayMessage();
+            endScore();
         }
     }, 1000);
 }
@@ -127,11 +131,10 @@ function selectAnswer(i) {
     const isCorrect = selectedBtn.dataset.correct === 'true';
     if(isCorrect){
         selectedBtn.classList.add('correct');
-        var score = score + 10;
+        score = score + 10;
     }else{
         selectedBtn.classList.add('incorrect');
-        var score = score + 10;
-        var timeleft = timeleft - 10;
+        timeLeft = timeLeft - 10;
     }
     Array.from(answerButtonsElement.children).forEach(button => {
         if(button.dataset.correct === "true"){
@@ -143,11 +146,33 @@ function selectAnswer(i) {
 }
 
 function endScore() {
+    clearInterval(timeInterval);
     resetFields();
-    questionElement.innerHTML = "You scored ${score}!"
+    score = score + timeLeft;
+    console.log(score);
+    var input=document.createElement("input");
+    input.id="userInitials";
+    questionElement.innerHTML = `You scored ${score}! <br> Please enter your Initials: <br>`
+    var saveButton = document.createElement("button");
+    saveButton.id = "save";
+    saveButton.textContent = "Submit Score"
+    saveButton.addEventListener ("click", submitScore);
+    questionElement.appendChild(input);
+    questionElement.appendChild(saveButton);
     nextButton.innerHTML = "Play Again?"
+    nextButton.addEventListener("click", startGame)
     nextButton.style.display = "block"
 }
+
+function submitScore (){
+    var user = {
+        initial:document.getElementById("userInitials").value ,
+        score
+    }
+    userScores.push(user);
+    localStorage.setItem("userScoreStored" , JSON.stringify(userScores))
+}
+
 
 function nextQuestion(){
     currentQuestionIndex++;
