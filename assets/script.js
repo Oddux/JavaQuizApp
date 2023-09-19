@@ -131,10 +131,10 @@ function selectAnswer(i) {
     const isCorrect = selectedBtn.dataset.correct === 'true';
     if(isCorrect){
         selectedBtn.classList.add('correct');
-        score = score + 10;
+        score += 10;
     }else{
         selectedBtn.classList.add('incorrect');
-        timeLeft = timeLeft - 10;
+        timeLeft -= 10;
     }
     Array.from(answerButtonsElement.children).forEach(button => {
         if(button.dataset.correct === "true"){
@@ -173,7 +173,6 @@ function submitScore (){
     localStorage.setItem("userScoreStored" , JSON.stringify(userScores))
 }
 
-
 function nextQuestion(){
     currentQuestionIndex++;
     if(currentQuestionIndex < questions.length){
@@ -191,6 +190,7 @@ function startGame() {
     startButton.style.display = "none";
     currentQuestionIndex = 0;
     score = 0; 
+    timeLeft = 90;
     countdown();
     showQuestion();
 }
